@@ -1,0 +1,9 @@
+NEW_LINE = _{ "\n" | "\r\n" | "\r" }
+
+line = @{ (!NEW_LINE ~ ANY)+ }
+
+head = ${ "# " ~ line ~ NEW_LINE}
+
+item = _{ head | line }
+
+file = { SOI ~ (item ~ NEW_LINE)* ~ item? ~ EOI }

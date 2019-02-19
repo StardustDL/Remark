@@ -1,0 +1,22 @@
+[package]
+name = "remark"
+version = "0.0.0"
+authors = ["StardustDL <stardustdl@163.com>"]
+edition = "2018"
+license = "Apache-2.0"
+description = "A mark-document generator."
+repository = "https://github.com/StardustDL/Remark"
+homepage = "https://github.com/StardustDL/Remark"
+readme = "../README.md"
+keywords = ["remark", "mark", "document"]
+
+[badges]
+travis-ci = { repository = "StardustDL/Remark", branch = "master" }
+codecov = { repository = "StardustDL/Remark", branch = "master", service = "github" }
+is-it-maintained-issue-resolution = { repository = "StardustDL/Remark" }
+is-it-maintained-open-issues = { repository = "StardustDL/Remark" }
+maintenance = { status = "experimental" }
+
+[dependencies]
+pest = "2.1.0"
+pest_derive = "2.1.0"
