@@ -11,13 +11,11 @@ impl Converter for HTMLConverter {
 
         for item in document {
             match item {
-                Head(ri) => body.push_str(&format!("<h1> {} </h1>", ri.content)),
+                Head(ri) => body.push_str(&format!("<h{level}> {content} </h{level}>", content = ri.content, level = ri.level)),
                 Line(ri) => body.push_str(&format!("{} <br/>", ri.content)),
-                _ => return Err(()),
+                // _ => return Err(()),
             }
         }
-
-        println!("{}", body);
 
         Ok(format!(
             "<!DOCTYPE html>

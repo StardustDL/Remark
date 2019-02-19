@@ -5,6 +5,7 @@ pub enum DocumentItem<'a> {
 
 pub struct HeadItem<'a> {
     pub content: &'a str,
+    pub level: u8,
 }
 
 pub struct LineItem<'a> {
@@ -29,7 +30,7 @@ impl<'a, 'i> IntoIterator for &'i Document<'a> {
     type IntoIter = <&'i Vec<DocumentItem<'a>> as IntoIterator>::IntoIter;
 
     fn into_iter(self) -> Self::IntoIter {
-        (&self.items).into_iter()
+        self.items.iter()
     }
 }
 
@@ -38,6 +39,6 @@ impl<'a, 'i> IntoIterator for &'i mut Document<'a> {
     type IntoIter = <&'i mut Vec<DocumentItem<'a>> as IntoIterator>::IntoIter;
 
     fn into_iter(self) -> Self::IntoIter {
-        (&mut self.items).into_iter()
+        self.items.iter_mut()
     }
 }

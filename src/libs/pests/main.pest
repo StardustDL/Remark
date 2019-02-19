@@ -1,8 +1,15 @@
 NEW_LINE = _{ "\n" | "\r\n" | "\r" }
 
-line = @{ (!NEW_LINE ~ ANY)+ }
+line = @{ (!NEW_LINE ~ ANY)* }
 
-head = ${ "# " ~ line ~ NEW_LINE}
+head1 = ${ "# " ~ line ~ NEW_LINE}
+head2 = ${ "## " ~ line ~ NEW_LINE}
+head3 = ${ "### " ~ line ~ NEW_LINE}
+head4 = ${ "#### " ~ line ~ NEW_LINE}
+head5 = ${ "##### " ~ line ~ NEW_LINE}
+head6 = ${ "###### " ~ line ~ NEW_LINE}
+
+head = _{ head1 | head2 | head3 | head4 | head5 | head6 }
 
 item = _{ head | line }
 

@@ -4,11 +4,15 @@ use remark::{
 };
 
 fn main() {
-    let input = "# abc
+    let input = "# H1
+
+## H2
+
+### H3
+
 
 This is a sentence.
 ";
     let doc = parser::parse(input).unwrap();
-
     println!("{}", HTMLConverter::convert(&doc).unwrap());
 }
