@@ -43,8 +43,51 @@ impl<'a, 'i> IntoIterator for &'i mut ParagraphItem<'a> {
 }
 
 #[derive(Debug)]
+pub enum InlineItem<'a> {
+    Text(TextItem<'a>),
+    Emphasized(EmphasizedItem<'a>),
+    Strong(StrongItem<'a>),
+}
+
+#[derive(Debug)]
+pub struct StrongItem<'a>(pub &'a str);
+
+#[derive(Debug)]
+pub struct EmphasizedItem<'a>(pub &'a str);
+
+#[derive(Debug)]
+pub struct TextItem<'a>(pub &'a str);
+
+#[derive(Debug)]
 pub struct LineItem<'a> {
-    pub content: &'a str,
+    pub items: Vec<InlineItem<'a>>,
+}
+
+impl<'a> IntoIterator for LineItem<'a> {
+    type Item = InlineItem<'a>;
+    type IntoIter = <Vec<InlineItem<'a>> as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.items.into_iter()
+    }
+}
+
+impl<'a, 'i> IntoIterator for &'i LineItem<'a> {
+    type Item = &'i InlineItem<'a>;
+    type IntoIter = <&'i Vec<InlineItem<'a>> as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.items.iter()
+    }
+}
+
+impl<'a, 'i> IntoIterator for &'i mut LineItem<'a> {
+    type Item = &'i mut InlineItem<'a>;
+    type IntoIter = <&'i mut Vec<InlineItem<'a>> as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.items.iter_mut()
+    }
 }
 
 #[derive(Debug)]

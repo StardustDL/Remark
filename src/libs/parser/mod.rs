@@ -1,6 +1,6 @@
 use pest::Parser;
 
-mod inner;
+pub mod inner;
 use inner::{InnerParser, Rule};
 
 mod item_parser;
@@ -35,7 +35,7 @@ pub fn parse(input: &str) -> Result<Document, ()> {
 #[cfg(test)]
 mod tests {
     use super::parse;
-    use crate::document::DocumentItem::*;
+    use crate::document::{DocumentItem::*, InlineItem::*};
 
     #[test]
     fn head() {
@@ -43,7 +43,13 @@ mod tests {
 
         for item in doc {
             match item {
-                Head(vi) => assert_eq!(vi.content.content, "abc中文"),
+                Head(vi) => {
+                    let inn = vi.content.into_iter().next().unwrap();
+                    match inn {
+                        Text(ti) => assert_eq!(ti.0, "abc中文"),
+                        _ => panic!("No head"),
+                    }
+                }
                 _ => panic!("No head"),
             }
         }

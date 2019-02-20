@@ -1,12 +1,25 @@
 NEW_LINE = _{ "\n" | "\r\n" | "\r" }
-TEXT_CHAR = _{ !NEW_LINE ~ ANY }
 
-text = @{ TEXT_CHAR* }
-text_ne = @{ TEXT_CHAR+ }
+WHITE_SPACE = _{ " " | "\t" }
 
-line = ${ text }
-line_ne = ${ text_ne }
+white_space = @{ WHITE_SPACE+ }
+
+WORD_CHAR = _{ !(NEW_LINE | WHITE_SPACE) ~ ANY }
+// TEXT_CHAR = _{ !NEW_LINE ~ ANY }
+
+word = @{ WORD_CHAR+ }
+
+emphasized_inner_word = _{ (!"*" ~ WORD_CHAR)+ }
+emphasized_inner = @{ (emphasized_inner_word ~ white_space)* ~ emphasized_inner_word }
+emphasized = ${ "*" ~ emphasized_inner ~ "*" }
+
+strong_inner_word = _{ (!"**" ~ WORD_CHAR)+ }
+strong_inner = @{ (strong_inner_word ~ white_space)* ~ strong_inner_word }
+strong = ${ "**" ~ strong_inner ~ "**" }
+
+line_ne = ${ white_space? ~ (strong | emphasized | word | white_space)+ }
 line_e = @{ "" }
+line = ${ line_ne | line_e }
 
 paragraph = ${ (line_ne ~ NEW_LINE)* ~ line_ne? }
 

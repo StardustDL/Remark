@@ -15,8 +15,7 @@ A mark-document generator.
 |-|-|
 |Build|[![](https://img.shields.io/travis/StardustDL/Remark.svg?style=flat-square)](https://travis-ci.org/StardustDL/Remark)|
 |Test|[![](https://img.shields.io/codecov/c/gh/StardustDL/Remark.svg?style=flat-square)](https://codecov.io/gh/StardustDL/Remark)|
-|Remark-Lib|[![](https://img.shields.io/crates/v/remark-lib.svg?style=flat-square)](https://crates.io/crates/remark-lib) [![](https://img.shields.io/crates/v/remark-lib.svg?style=flat-square&label=docs&&colorA=blue)](https://docs.rs/remark-lib/) ![](https://img.shields.io/crates/d/remark-lib.svg?style=flat-square)|
-|Remark|[![](https://img.shields.io/crates/v/remark.svg?style=flat-square)](https://crates.io/crates/remark) [![](https://img.shields.io/crates/v/remark.svg?style=flat-square&label=docs&&colorA=blue)](https://docs.rs/remark/) ![](https://img.shields.io/crates/d/remark.svg?style=flat-square)|
+|Crate|[![](https://img.shields.io/crates/v/remark.svg?style=flat-square)](https://crates.io/crates/remark) [![](https://img.shields.io/crates/v/remark.svg?style=flat-square&label=docs&&colorA=blue)](https://docs.rs/remark/) ![](https://img.shields.io/crates/d/remark.svg?style=flat-square)|
 
 ## Development
 

@@ -1,10 +1,26 @@
 use super::Converter;
-use crate::document::{Document, DocumentItem::*, HeadItem, LineItem, ParagraphItem};
+use crate::document::{Document, DocumentItem::*, HeadItem, LineItem, ParagraphItem, InlineItem};
 use std::fmt::{self, Display, Formatter};
+
+impl<'a> Display for InlineItem<'a> {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        match self {
+             InlineItem::Text(ti)=>write!(f, "{}", ti.0),
+             InlineItem::Strong(ti)=>write!(f, "<strong>{}</strong>", ti.0),
+             InlineItem::Emphasized(ti)=>write!(f, "<em>{}</em>", ti.0),
+        }
+    }
+}
 
 impl<'a> Display for LineItem<'a> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", self.content)
+        let mut body = String::new();
+
+        for item in self {
+            body.push_str(&format!("{}", item));
+        }
+
+        write!(f, "{content}", content = body,)
     }
 }
 
@@ -12,7 +28,7 @@ impl<'a> Display for HeadItem<'a> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(
             f,
-            "<h{level}> {content} </h{level}>",
+            "<h{level}>{content}</h{level}>",
             content = self.content,
             level = self.level
         )

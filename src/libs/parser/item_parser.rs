@@ -1,5 +1,7 @@
 use super::inner::Rule;
-use crate::document::{HeadItem, LineItem, ParagraphItem};
+use crate::document::{
+    EmphasizedItem, HeadItem, InlineItem::*, LineItem, ParagraphItem, StrongItem, TextItem,
+};
 use pest::iterators::Pair;
 
 #[inline]
@@ -39,10 +41,22 @@ pub fn parse_head(source: Pair<Rule>) -> HeadItem {
 
 pub fn parse_line(source: Pair<Rule>) -> LineItem {
     match source.as_rule() {
-        Rule::line | Rule::line_ne => LineItem {
-            content: inner_first(source).as_str(),
-        },
-        Rule::line_e => LineItem { content: "" },
+        Rule::line => parse_line(inner_first(source)),
+        Rule::line_ne => {
+            let mut items = Vec::new();
+            for item in source.into_inner() {
+                match item.as_rule() {
+                    Rule::strong => items.push(Strong(StrongItem(inner_first(item).as_str()))),
+                    Rule::emphasized => {
+                        items.push(Emphasized(EmphasizedItem(inner_first(item).as_str())))
+                    }
+                    Rule::word | Rule::white_space => items.push(Text(TextItem(item.as_str()))),
+                    _ => unreachable!(),
+                }
+            }
+            LineItem { items }
+        }
+        Rule::line_e => LineItem { items: vec![] },
         _ => unreachable!(),
     }
 }
