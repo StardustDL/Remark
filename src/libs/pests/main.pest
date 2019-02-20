@@ -1,6 +1,14 @@
 NEW_LINE = _{ "\n" | "\r\n" | "\r" }
+TEXT_CHAR = _{ !NEW_LINE ~ ANY }
 
-line = @{ (!NEW_LINE ~ ANY)* }
+text = @{ TEXT_CHAR* }
+text_ne = @{ TEXT_CHAR+ }
+
+line = ${ text }
+line_ne = ${ text_ne }
+line_e = @{ "" }
+
+paragraph = ${ (line_ne ~ NEW_LINE)* ~ line_ne? }
 
 head1 = ${ "# " ~ line ~ NEW_LINE}
 head2 = ${ "## " ~ line ~ NEW_LINE}
@@ -11,6 +19,6 @@ head6 = ${ "###### " ~ line ~ NEW_LINE}
 
 head = _{ head1 | head2 | head3 | head4 | head5 | head6 }
 
-item = _{ head | line }
+item = _{ head | paragraph }
 
 file = { SOI ~ (item ~ NEW_LINE)* ~ item? ~ EOI }

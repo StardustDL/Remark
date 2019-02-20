@@ -1,7 +1,5 @@
-mod document;
-pub use document::*;
-
-pub mod parser;
 pub mod converter;
-
-
+pub mod document;
+pub mod error;
+pub mod parser;
+pub mod result;

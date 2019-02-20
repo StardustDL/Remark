@@ -3,7 +3,10 @@ use pest::Parser;
 mod inner;
 use inner::{InnerParser, Rule};
 
-use crate::{Document, DocumentItem::*, HeadItem, LineItem};
+mod item_parser;
+use item_parser::*;
+
+use crate::document::{Document, DocumentItem::*};
 
 pub fn parse(input: &str) -> Result<Document, ()> {
     let file = match InnerParser::parse(Rule::file, input) {
@@ -17,36 +20,12 @@ pub fn parse(input: &str) -> Result<Document, ()> {
 
     for item in file.into_inner() {
         match item.as_rule() {
-            Rule::head1 => items.push(Head(HeadItem {
-                content: item.into_inner().next().unwrap().as_str(),
-                level: 1,
-            })),
-            Rule::head2 => items.push(Head(HeadItem {
-                content: item.into_inner().next().unwrap().as_str(),
-                level: 2,
-            })),
-            Rule::head3 => items.push(Head(HeadItem {
-                content: item.into_inner().next().unwrap().as_str(),
-                level: 3,
-            })),
-            Rule::head4 => items.push(Head(HeadItem {
-                content: item.into_inner().next().unwrap().as_str(),
-                level: 4,
-            })),
-            Rule::head5 => items.push(Head(HeadItem {
-                content: item.into_inner().next().unwrap().as_str(),
-                level: 5,
-            })),
-            Rule::head6 => items.push(Head(HeadItem {
-                content: item.into_inner().next().unwrap().as_str(),
-                level: 6,
-            })),
-            
-            Rule::line => items.push(Line(LineItem {
-                content: item.as_str(),
-            })),
+            Rule::head1 | Rule::head2 | Rule::head3 | Rule::head4 | Rule::head5 | Rule::head6 => {
+                items.push(Head(parse_head(item)))
+            }
+            Rule::paragraph => items.push(Paragraph(parse_paragraph(item))),
             Rule::EOI => (),
-            _ => panic!(format!("{:#?}", item)),
+            _ => unreachable!(format!("{:#?}", item)),
         }
     }
 
@@ -56,7 +35,7 @@ pub fn parse(input: &str) -> Result<Document, ()> {
 #[cfg(test)]
 mod tests {
     use super::parse;
-    use crate::DocumentItem::*;
+    use crate::document::DocumentItem::*;
 
     #[test]
     fn head() {
@@ -64,7 +43,7 @@ mod tests {
 
         for item in doc {
             match item {
-                Head(vi) => assert_eq!(vi.content, "abc中文"),
+                Head(vi) => assert_eq!(vi.content.content, "abc中文"),
                 _ => panic!("No head"),
             }
         }

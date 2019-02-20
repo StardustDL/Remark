@@ -15,6 +15,15 @@ mod tests {
             .expect("parse failed")
             .next()
             .unwrap();
-        assert_eq!(head.into_inner().next().unwrap().as_str(), "abc中文");
+        assert_eq!(
+            head.into_inner()
+                .next()
+                .unwrap()
+                .into_inner()
+                .next()
+                .unwrap()
+                .as_str(),
+            "abc中文"
+        );
     }
 }
